@@ -1,0 +1,41 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install system dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y \
+          python3 \
+          python3-pip \
+          python3-venv \
+          openjdk-17-jdk \
+          zip \
+          unzip \
+          git
+
+    - name: Install Buildozer
+      run: pip3 install buildozer
+
+    - name: Build APK
+      run: |
+        buildozer init
+        buildozer -v android debug
+
+    - name: Upload APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: StockCtrl-APK
+        path: bin/*.apk
+        retention-days: 7

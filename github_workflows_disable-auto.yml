@@ -1,0 +1,9 @@
+# This file prevents GitHub from auto-generating Python workflows
+name: Disable auto workflows
+on: [push]
+jobs:
+  disable:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prevent auto Python setup
+        run: echo "Using custom build workflow only"
